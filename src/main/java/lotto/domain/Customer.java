@@ -1,0 +1,33 @@
+package lotto.domain;
+
+import static lotto.exception.ErrorMessage.NOT_MULTIPLE_OF_1000;
+
+import java.util.List;
+
+public class Customer {
+
+    private final int cash;
+    private List<Lotto> userLottos;
+
+    private Customer(int cash) {
+        this.cash = cash;
+    }
+
+    public static Customer with(int cash) {
+        validateCorrectCash(cash);
+        return new Customer(cash);
+    }
+
+    private static void validateCorrectCash(int cash) {
+        if (cash % 1000 != 0) {
+            throw new IllegalArgumentException(NOT_MULTIPLE_OF_1000.getMessage());
+        }
+    }
+
+    public List<List<Integer>> buyLottoFrom(LottoSeller lottoSeller) {
+        userLottos = lottoSeller.createLottoWithin(cash);
+        return userLottos.stream()
+                .map(Lotto::getNumbers)
+                .toList();
+    }
+}
