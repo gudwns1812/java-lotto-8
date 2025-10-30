@@ -1,6 +1,7 @@
 package lotto.Factory;
 
 import static lotto.exception.ErrorMessage.NOT_NUMBER;
+import static lotto.exception.ErrorMessage.NOT_VALID_NUMBER;
 
 import lotto.domain.Customer;
 
@@ -10,7 +11,14 @@ public class CustomerFactory {
 
     public static Customer createCustomerWith(String fee) {
         int numberFee = parseInt(fee);
+        validateValidNumber(numberFee);
         return Customer.with(numberFee);
+    }
+
+    private static void validateValidNumber(int numberFee) {
+        if (numberFee <= 0) {
+            throw new IllegalArgumentException(NOT_VALID_NUMBER.getMessage());
+        }
     }
 
     private static int parseInt(String fee) {

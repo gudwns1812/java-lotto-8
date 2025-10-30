@@ -3,6 +3,8 @@ package lotto.Factory;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CustomerFactoryTest {
 
@@ -12,6 +14,13 @@ class CustomerFactoryTest {
         String input = "8800";
         //when
         //then
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> CustomerFactory.createCustomerWith(input));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "-1000"})
+    void 입력값이_0이하면_예외를_터트린다(String input) {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> CustomerFactory.createCustomerWith(input));
     }
