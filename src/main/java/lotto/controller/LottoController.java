@@ -24,7 +24,7 @@ public class LottoController {
         try {
             return Integer.parseInt(fee);
         } catch (NumberFormatException e) {
-            printer.printErrorMessage(NOT_NUMBER.getMessage());
+            printer.printErrorMessage(NOT_NUMBER);
             return 0;
         }
     }

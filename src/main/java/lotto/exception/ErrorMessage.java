@@ -9,7 +9,8 @@ public enum ErrorMessage {
         this.message = "[ERROR] " + message;
     }
 
-    public String getMessage() {
+    @Override
+    public String toString() {
         return message;
     }
 }
