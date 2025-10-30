@@ -7,4 +7,14 @@ public class ConsoleReader implements Reader {
     public String readUserFee() {
         return Console.readLine();
     }
+
+    @Override
+    public String readWinningMainNumbers() {
+        return Console.readLine();
+    }
+
+    @Override
+    public String readWinningBonusNumber() {
+        return Console.readLine();
+    }
 }

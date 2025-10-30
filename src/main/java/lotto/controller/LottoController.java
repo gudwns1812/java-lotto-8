@@ -2,8 +2,10 @@ package lotto.controller;
 
 import java.util.List;
 import lotto.Factory.CustomerFactory;
+import lotto.Factory.WinningNumbersFactory;
 import lotto.domain.Customer;
 import lotto.domain.LottoSeller;
+import lotto.domain.WinningNumbers;
 import lotto.view.printer.Printer;
 import lotto.view.reader.Reader;
 
@@ -19,10 +21,12 @@ public class LottoController {
     }
 
     public void run() {
-        Customer customer = processGenerateLotto();
+        Customer customer = customerWithGenerateLotto();
+        WinningNumbers winningNumbers = ReadWinningNumbers();
+        CalculateAndPrintProfit(winningNumbers);
     }
 
-    private Customer processGenerateLotto() {
+    private Customer customerWithGenerateLotto() {
         while (true) {
             try {
                 printer.printEnterUserFee();
@@ -30,11 +34,29 @@ public class LottoController {
 
                 Customer customer = CustomerFactory.createCustomerWith(fee);
                 List<List<Integer>> customerLottos = customer.buyLottoFrom(lottoSeller);
+
                 printer.printLottoNumbers(customerLottos);
                 return customer;
             } catch (IllegalArgumentException e) {
                 printer.printErrorMessage(e.getMessage());
             }
         }
+    }
+
+    private WinningNumbers ReadWinningNumbers() {
+        while (true) {
+            try {
+                String mainNumber = reader.readWinningMainNumbers();
+                String bonusNumber = reader.readWinningBonusNumber();
+
+                return WinningNumbersFactory.createWinningNumbers(mainNumber, bonusNumber);
+            } catch (IllegalArgumentException e) {
+                printer.printErrorMessage(e.getMessage());
+            }
+        }
+    }
+
+    private void CalculateAndPrintProfit(WinningNumbers winningNumbers) {
+
     }
 }
