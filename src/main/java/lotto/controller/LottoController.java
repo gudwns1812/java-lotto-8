@@ -1,45 +1,40 @@
 package lotto.controller;
 
-import static lotto.exception.ErrorMessage.NOT_MULTIPLE_OF_1000;
-import static lotto.exception.ErrorMessage.NOT_NUMBER;
-
-import lotto.service.LottoService;
+import java.util.List;
+import lotto.Factory.CustomerFactory;
+import lotto.domain.Customer;
+import lotto.domain.LottoSeller;
 import lotto.view.printer.Printer;
 import lotto.view.reader.Reader;
 
 public class LottoController {
     private final Reader reader;
     private final Printer printer;
-    private final LottoService lottoService;
+    private final LottoSeller lottoSeller;
 
-    public LottoController(Reader reader, Printer printer, LottoService lottoService) {
+    public LottoController(Reader reader, Printer printer, LottoSeller seller) {
         this.reader = reader;
         this.printer = printer;
-        this.lottoService = lottoService;
+        this.lottoSeller = seller;
     }
 
     public void run() {
-        processGenerateLotto();
+        Customer customer = processGenerateLotto();
     }
 
-    private void processGenerateLotto() {
+    private Customer processGenerateLotto() {
         while (true) {
             try {
                 printer.printEnterUserFee();
                 String fee = reader.readUserFee();
-                int userFee = parseInt(fee);
-            } catch (IllegalArgumentException e) {
-                printer.printErrorMessage(NOT_MULTIPLE_OF_1000);
-            }
-        }
-    }
 
-    private int parseInt(String fee) {
-        try {
-            return Integer.parseInt(fee);
-        } catch (NumberFormatException e) {
-            printer.printErrorMessage(NOT_NUMBER);
-            return 0;
+                Customer customer = CustomerFactory.createCustomerWith(fee);
+                List<List<Integer>> customerLottos = customer.buyLottoFrom(lottoSeller);
+                printer.printLottoNumbers(customerLottos);
+                return customer;
+            } catch (IllegalArgumentException e) {
+                printer.printErrorMessage(e.getMessage());
+            }
         }
     }
 }

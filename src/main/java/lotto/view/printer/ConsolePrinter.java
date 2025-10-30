@@ -2,7 +2,7 @@ package lotto.view.printer;
 
 import static lotto.view.printer.PrintMessage.USER_FEE_MESSAGE;
 
-import lotto.exception.ErrorMessage;
+import java.util.List;
 
 public class ConsolePrinter implements Printer {
     @Override
@@ -11,7 +11,12 @@ public class ConsolePrinter implements Printer {
     }
 
     @Override
-    public void printErrorMessage(ErrorMessage message) {
+    public void printErrorMessage(String message) {
         System.out.println(message);
+    }
+
+    @Override
+    public void printLottoNumbers(List<List<Integer>> LottoNumbers) {
+        
     }
 }
