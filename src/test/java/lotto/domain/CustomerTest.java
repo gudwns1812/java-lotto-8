@@ -24,7 +24,7 @@ class CustomerTest {
         //when
         List<List<Integer>> numbers = customer.buyLottoFrom(seller);
         //then
-        assertThat(numbers.getFirst().size()).isEqualTo(6);
+        assertThat(numbers.size()).isEqualTo(6);
     }
 
     @Test
