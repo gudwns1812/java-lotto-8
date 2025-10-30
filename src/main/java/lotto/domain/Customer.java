@@ -6,16 +6,16 @@ import java.util.List;
 
 public class Customer {
 
-    private final int cash;
+    private final Money cash;
     private List<Lotto> userLottos;
 
-    private Customer(int cash) {
+    private Customer(Money cash) {
         this.cash = cash;
     }
 
     public static Customer with(int cash) {
         validateCorrectCash(cash);
-        return new Customer(cash);
+        return new Customer(Money.won(cash));
     }
 
     private static void validateCorrectCash(int cash) {
