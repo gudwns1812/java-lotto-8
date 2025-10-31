@@ -7,8 +7,8 @@ import lotto.domain.numbergenerator.RandomGenerator;
 import lotto.view.printer.ConsolePrinter;
 import lotto.view.reader.ConsoleReader;
 
-public class LottoFactory {
-    private LottoFactory() {
+public class ApplicationFactory {
+    private ApplicationFactory() {
     }
 
     public static NumberGenerator generator() {
