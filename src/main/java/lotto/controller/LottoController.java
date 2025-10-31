@@ -1,10 +1,12 @@
 package lotto.controller;
 
 import java.util.List;
+import java.util.Map;
 import lotto.Factory.CustomerFactory;
 import lotto.Factory.WinningNumbersFactory;
 import lotto.domain.Customer;
 import lotto.domain.LottoSeller;
+import lotto.domain.Rank;
 import lotto.domain.WinningNumbers;
 import lotto.view.printer.Printer;
 import lotto.view.reader.Reader;
@@ -23,6 +25,7 @@ public class LottoController {
     public void run() {
         Customer customer = customerWithGenerateLotto();
         WinningNumbers winningNumbers = readWinningNumbers();
+        calculateAndPrintFinalResult(customer, winningNumbers);
     }
 
     private Customer customerWithGenerateLotto() {
@@ -43,6 +46,7 @@ public class LottoController {
     }
 
     //두개를 분리해야할까?
+
     private WinningNumbers readWinningNumbers() {
         while (true) {
             try {
@@ -56,5 +60,10 @@ public class LottoController {
                 printer.printErrorMessage(e.getMessage());
             }
         }
+    }
+
+    private void calculateAndPrintFinalResult(Customer customer, WinningNumbers winningNumbers) {
+        Map<Rank, Long> rankStatics = customer.getRankStatics(winningNumbers);
+        double profitRate = customer.calculateProfitRate(winningNumbers);
     }
 }

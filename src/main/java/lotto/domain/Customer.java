@@ -41,4 +41,15 @@ public class Customer {
         return lottoRanks.stream()
                 .collect(Collectors.groupingBy(rank -> rank, Collectors.counting()));
     }
+
+    public double calculateProfitRate(WinningNumbers winningNumbers) {
+        List<Rank> lottoRanks = winningNumbers.evaluateLottoRanks(userLottos);
+
+        Money prize = lottoRanks.stream()
+                .map(Rank::getPrize)
+                .reduce(Money::plus)
+                .orElse(Money.ZERO);
+
+        return prize.divideBy(cash);
+    }
 }

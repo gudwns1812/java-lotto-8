@@ -3,7 +3,9 @@ package lotto.domain;
 import static lotto.domain.LottoLimitNumbers.LOTTO_PRICE;
 
 public class Money {
-    public final static Money ZERO = Money.won(0);
+    public static final Money ZERO = Money.won(0);
+    private static final int PERCENT = 100;
+
     private final long amount;
 
     private Money(long amount) {
@@ -22,8 +24,8 @@ public class Money {
         return new Money(amount + money.amount);
     }
 
-    public double calculatePercentWith(Money cash) {
-        return (double) amount / cash.amount;
+    public double divideBy(Money cash) {
+        return (double) amount / (cash.amount * PERCENT);
     }
 
     public long getValue() {
