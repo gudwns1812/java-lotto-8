@@ -1,10 +1,18 @@
 package lotto.view.printer;
 
+import static lotto.domain.Rank.FIFTH_PLACE;
+import static lotto.view.printer.PrintMessage.BONUS_WINNING_NUMBER;
+import static lotto.view.printer.PrintMessage.FORMAT_PROFIT_RATE;
+import static lotto.view.printer.PrintMessage.HORIZON;
+import static lotto.view.printer.PrintMessage.LOTTO_STATICS;
+import static lotto.view.printer.PrintMessage.MAIN_WINNING_NUMBER;
 import static lotto.view.printer.PrintMessage.USER_FEE_MESSAGE;
 import static lotto.view.printer.PrintMessage.USER_PURCHASE_COUNT;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import lotto.domain.Rank;
 
 public class ConsolePrinter implements Printer {
     @Override
@@ -24,6 +32,16 @@ public class ConsolePrinter implements Printer {
         System.out.println(lottoNumberString(lottoNumbers));
     }
 
+    @Override
+    public void printEnterWinningNumber() {
+        System.out.println(MAIN_WINNING_NUMBER);
+    }
+
+    @Override
+    public void printEnterBonusNumber() {
+        System.out.println(BONUS_WINNING_NUMBER);
+    }
+
     private String lottoNumberString(List<List<Integer>> lottoNumbers) {
         return lottoNumbers.stream()
                 .map(numbers -> this.eachNumberString(numbers))
@@ -36,5 +54,34 @@ public class ConsolePrinter implements Printer {
                 .collect(Collectors.joining(","));
 
         return "[" + numberString + "]";
+    }
+
+    @Override
+    public void printLottoStatics(Map<Rank, Long> rankStatics, double profitRate) {
+        System.out.println(LOTTO_STATICS);
+        System.out.println(HORIZON);
+
+        StringBuilder sb = new StringBuilder();
+        for (Rank rank : Rank.values()) {
+            if (rank.equals(Rank.NONE_PLACE)) {
+                continue;
+            }
+
+            sb.append(rank.getCorrectCount() % 10)
+                    .append("개 일치");
+
+            if (rank.getCorrectCount() > 10) {
+                sb.append(", 보너스 볼 일치");
+            }
+
+            sb.append(" (")
+                    .append(rank.getPrize().getValue())
+                    .append("원) - ")
+                    .append(rankStatics.getOrDefault(FIFTH_PLACE, 0L))
+                    .append("개\n");
+        }
+
+        System.out.println(sb);
+        System.out.printf(FORMAT_PROFIT_RATE.toString(), profitRate);
     }
 }

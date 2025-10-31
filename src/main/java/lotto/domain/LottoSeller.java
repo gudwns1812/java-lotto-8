@@ -1,7 +1,7 @@
 package lotto.domain;
 
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import lotto.domain.numbergenerator.NumberGenerator;
 
 public class LottoSeller {
@@ -13,9 +13,9 @@ public class LottoSeller {
     }
 
     public List<Lotto> createLottoWithin(Money cash) {
-        int lottoCount = cash.calculateLottoCount();
-        return IntStream.range(0, lottoCount)
-                .mapToObj(i -> new Lotto(numberGenerator.generateNumbers()))
+        long lottoCount = cash.calculateLottoCount();
+        return LongStream.range(0, lottoCount)
+                .mapToObj(i -> Lotto.from(numberGenerator.generateNumbers()))
                 .toList();
     }
 }

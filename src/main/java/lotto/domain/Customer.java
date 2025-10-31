@@ -3,6 +3,8 @@ package lotto.domain;
 import static lotto.exception.ErrorMessage.NOT_MULTIPLE_OF_1000;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Customer {
 
@@ -24,10 +26,19 @@ public class Customer {
         }
     }
 
+    //CQS 원칙
     public List<List<Integer>> buyLottoFrom(LottoSeller lottoSeller) {
         userLottos = lottoSeller.createLottoWithin(cash);
+
         return userLottos.stream()
                 .map(Lotto::getNumbers)
                 .toList();
+    }
+
+    public Map<Rank, Long> getRankStatics(WinningNumbers winningNumbers) {
+        List<Rank> lottoRanks = winningNumbers.evaluateLottoRanks(userLottos);
+
+        return lottoRanks.stream()
+                .collect(Collectors.groupingBy(rank -> rank, Collectors.counting()));
     }
 }

@@ -22,8 +22,7 @@ public class LottoController {
 
     public void run() {
         Customer customer = customerWithGenerateLotto();
-        WinningNumbers winningNumbers = ReadWinningNumbers();
-        CalculateAndPrintProfit(winningNumbers);
+        WinningNumbers winningNumbers = readWinningNumbers();
     }
 
     private Customer customerWithGenerateLotto() {
@@ -43,10 +42,13 @@ public class LottoController {
         }
     }
 
-    private WinningNumbers ReadWinningNumbers() {
+    //두개를 분리해야할까?
+    private WinningNumbers readWinningNumbers() {
         while (true) {
             try {
+                printer.printEnterWinningNumber();
                 String mainNumber = reader.readWinningMainNumbers();
+                printer.printEnterBonusNumber();
                 String bonusNumber = reader.readWinningBonusNumber();
 
                 return WinningNumbersFactory.createWinningNumbers(mainNumber, bonusNumber);
@@ -54,9 +56,5 @@ public class LottoController {
                 printer.printErrorMessage(e.getMessage());
             }
         }
-    }
-
-    private void CalculateAndPrintProfit(WinningNumbers winningNumbers) {
-
     }
 }
