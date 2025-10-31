@@ -25,7 +25,7 @@ public class LottoController {
     public void run() {
         Customer customer = customerWithGenerateLotto();
         WinningNumbers winningNumbers = readWinningNumbers();
-        calculateAndPrintFinalResult(customer, winningNumbers);
+        processFinalResult(customer, winningNumbers);
     }
 
     private Customer customerWithGenerateLotto() {
@@ -62,8 +62,10 @@ public class LottoController {
         }
     }
 
-    private void calculateAndPrintFinalResult(Customer customer, WinningNumbers winningNumbers) {
+    private void processFinalResult(Customer customer, WinningNumbers winningNumbers) {
         Map<Rank, Long> rankStatics = customer.getRankStatics(winningNumbers);
         double profitRate = customer.calculateProfitRate(winningNumbers);
+
+        printer.printFinalResult(rankStatics, profitRate);
     }
 }

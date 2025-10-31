@@ -25,7 +25,7 @@ public class Money {
     }
 
     public double divideBy(Money cash) {
-        return (double) amount / (cash.amount * PERCENT);
+        return (double) (amount * PERCENT) / cash.amount;
     }
 
     public long getValue() {

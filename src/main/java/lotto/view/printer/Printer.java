@@ -15,5 +15,5 @@ public interface Printer {
 
     void printEnterBonusNumber();
 
-    void printLottoStatics(Map<Rank, Long> rankStatics, double profitRate);
+    void printFinalResult(Map<Rank, Long> rankStatics, double profitRate);
 }

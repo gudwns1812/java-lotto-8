@@ -74,7 +74,7 @@ class CustomerTest {
 
         long totalPrize = Rank.SECOND_PLACE.getPrize().getValue() * 5;
         long totalCost = 5000;
-        double expectedProfitRate = (double) totalPrize / (totalCost * PERCENT);
+        double expectedProfitRate = (double) (totalPrize * PERCENT) / totalCost;
         //when
         double profitRate = customer.calculateProfitRate(createWinningNumbers(mainInput, bonusInput));
         //then

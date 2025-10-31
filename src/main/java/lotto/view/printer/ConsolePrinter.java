@@ -1,6 +1,5 @@
 package lotto.view.printer;
 
-import static lotto.domain.Rank.FIFTH_PLACE;
 import static lotto.view.printer.PrintMessage.BONUS_WINNING_NUMBER;
 import static lotto.view.printer.PrintMessage.FORMAT_PROFIT_RATE;
 import static lotto.view.printer.PrintMessage.HORIZON;
@@ -9,6 +8,7 @@ import static lotto.view.printer.PrintMessage.MAIN_WINNING_NUMBER;
 import static lotto.view.printer.PrintMessage.USER_FEE_MESSAGE;
 import static lotto.view.printer.PrintMessage.USER_PURCHASE_COUNT;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,6 +50,7 @@ public class ConsolePrinter implements Printer {
 
     private String eachNumberString(List<Integer> numbers) {
         String numberString = numbers.stream()
+                .sorted()
                 .map(String::valueOf)
                 .collect(Collectors.joining(","));
 
@@ -57,7 +58,7 @@ public class ConsolePrinter implements Printer {
     }
 
     @Override
-    public void printLottoStatics(Map<Rank, Long> rankStatics, double profitRate) {
+    public void printFinalResult(Map<Rank, Long> rankStatics, double profitRate) {
         System.out.println(LOTTO_STATICS);
         System.out.println(HORIZON);
 
@@ -67,21 +68,26 @@ public class ConsolePrinter implements Printer {
                 continue;
             }
 
-            sb.append(rank.getCorrectCount() % 10)
+            sb.append(rank.getCorrectCount())
                     .append("개 일치");
 
-            if (rank.getCorrectCount() > 10) {
+            if (rank.hasBonus()) {
                 sb.append(", 보너스 볼 일치");
             }
 
             sb.append(" (")
-                    .append(rank.getPrize().getValue())
+                    .append(makeThreeDigitComma(rank))
                     .append("원) - ")
-                    .append(rankStatics.getOrDefault(FIFTH_PLACE, 0L))
+                    .append(rankStatics.getOrDefault(rank, 0L))
                     .append("개\n");
         }
 
         System.out.println(sb);
         System.out.printf(FORMAT_PROFIT_RATE.toString(), profitRate);
+    }
+
+    private String makeThreeDigitComma(Rank rank) {
+        long value = rank.getPrize().getValue();
+        return new DecimalFormat("#,###").format(value);
     }
 }
