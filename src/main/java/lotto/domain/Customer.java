@@ -26,7 +26,6 @@ public class Customer {
         }
     }
 
-    //CQS 원칙
     public List<List<Integer>> buyLottoFrom(LottoSeller lottoSeller) {
         userLottos = lottoSeller.createLottoWithin(cash);
 

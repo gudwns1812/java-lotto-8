@@ -1,9 +1,10 @@
 package lotto.controller;
 
+import static lotto.factory.CustomerFactory.createCustomerWith;
+import static lotto.factory.WinningNumbersFactory.createWinningNumbers;
+
 import java.util.List;
 import java.util.Map;
-import lotto.Factory.CustomerFactory;
-import lotto.Factory.WinningNumbersFactory;
 import lotto.domain.Customer;
 import lotto.domain.LottoSeller;
 import lotto.domain.Rank;
@@ -34,7 +35,7 @@ public class LottoController {
                 printer.printEnterUserFee();
                 String fee = reader.readUserFee();
 
-                Customer customer = CustomerFactory.createCustomerWith(fee);
+                Customer customer = createCustomerWith(fee);
                 List<List<Integer>> customerLottos = customer.buyLottoFrom(lottoSeller);
 
                 printer.printLottoNumbers(customerLottos);
@@ -45,17 +46,16 @@ public class LottoController {
         }
     }
 
-    //두개를 분리해야할까?
-
     private WinningNumbers readWinningNumbers() {
         while (true) {
             try {
                 printer.printEnterWinningNumber();
                 String mainNumber = reader.readWinningMainNumbers();
+
                 printer.printEnterBonusNumber();
                 String bonusNumber = reader.readWinningBonusNumber();
 
-                return WinningNumbersFactory.createWinningNumbers(mainNumber, bonusNumber);
+                return createWinningNumbers(mainNumber, bonusNumber);
             } catch (IllegalArgumentException e) {
                 printer.printErrorMessage(e.getMessage());
             }

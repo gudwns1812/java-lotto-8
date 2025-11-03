@@ -1,4 +1,4 @@
-package lotto.Factory;
+package lotto.factory;
 
 import static lotto.exception.ErrorMessage.NOT_VALID_NUMBER;
 import static lotto.util.NumberConverter.parseInt;

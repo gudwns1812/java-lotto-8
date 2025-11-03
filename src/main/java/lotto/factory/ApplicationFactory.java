@@ -1,4 +1,4 @@
-package lotto.Factory;
+package lotto.factory;
 
 import lotto.controller.LottoController;
 import lotto.domain.LottoSeller;

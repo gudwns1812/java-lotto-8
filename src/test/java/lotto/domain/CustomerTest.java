@@ -1,6 +1,6 @@
 package lotto.domain;
 
-import static lotto.Factory.WinningNumbersFactory.createWinningNumbers;
+import static lotto.factory.WinningNumbersFactory.createWinningNumbers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;

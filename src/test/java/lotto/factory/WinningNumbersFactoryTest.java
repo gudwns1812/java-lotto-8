@@ -1,4 +1,4 @@
-package lotto.Factory;
+package lotto.factory;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
