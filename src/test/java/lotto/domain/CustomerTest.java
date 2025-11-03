@@ -59,8 +59,8 @@ class CustomerTest {
         Lotto mainInput = Lotto.from(List.of(1, 2, 3, 4, 5, 7));
         String bonusInput = "6";
 
-        long totalPrize = Rank.SECOND_PLACE.getPrize().getValue() * 5;
-        long totalCost = 5000;
+        long totalPrize = Rank.SECOND_PLACE.getPrize().getValue();
+        long totalCost = 1000;
         double expectedProfitRate = (double) (totalPrize * PERCENT) / totalCost;
         //when
         double profitRate = customer.calculateProfitRate(createWinningNumbers(mainInput, bonusInput));
