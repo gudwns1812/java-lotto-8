@@ -54,7 +54,7 @@ public class ConsolePrinter implements Printer {
         String numberString = numbers.stream()
                 .sorted()
                 .map(String::valueOf)
-                .collect(Collectors.joining(","));
+                .collect(Collectors.joining(", "));
 
         return "[" + numberString + "]";
     }
