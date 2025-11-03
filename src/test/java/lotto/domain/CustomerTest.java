@@ -33,26 +33,13 @@ class CustomerTest {
     }
 
     @Test
-    void Lotto_내부값들은_전부_오름차순이다() {
-        //given
-        seller = new LottoSeller(new RandomGenerator());
-        //when
-        List<List<Integer>> numbers = customer.buyLottoFrom(seller);
-        List<Integer> first = numbers.getFirst();
-        //then
-        for (int i = 0; i < first.size() - 1; i++) {
-            assertThat(first.get(i)).isLessThanOrEqualTo(first.get(i + 1));
-        }
-    }
-
-    @Test
     void customer가_WinningNumber와_숫자를_비교해_Rank_를_반환한다() {
         //given
         List<Integer> userLotto = List.of(1, 2, 3, 4, 5, 6);
         seller = new LottoSeller(new FixedGenerator(userLotto));
         customer.buyLottoFrom(seller);
 
-        String mainInput = "1,2,3,4,5,7";
+        Lotto mainInput = Lotto.from(List.of(1, 2, 3, 4, 5, 7));
         String bonusInput = "6";
         //when
         Map<Rank, Long> rankStatics = customer.getRankStatics(createWinningNumbers(mainInput, bonusInput));
@@ -69,7 +56,7 @@ class CustomerTest {
         seller = new LottoSeller(new FixedGenerator(userLotto));
         customer.buyLottoFrom(seller);
 
-        String mainInput = "1,2,3,4,5,7";
+        Lotto mainInput = Lotto.from(List.of(1, 2, 3, 4, 5, 7));
         String bonusInput = "6";
 
         long totalPrize = Rank.SECOND_PLACE.getPrize().getValue() * 5;

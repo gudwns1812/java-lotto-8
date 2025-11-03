@@ -1,11 +1,13 @@
 package lotto.controller;
 
 import static lotto.factory.CustomerFactory.createCustomerWith;
+import static lotto.factory.LottoFactory.createLotto;
 import static lotto.factory.WinningNumbersFactory.createWinningNumbers;
 
 import java.util.List;
 import java.util.Map;
 import lotto.domain.Customer;
+import lotto.domain.Lotto;
 import lotto.domain.LottoSeller;
 import lotto.domain.Rank;
 import lotto.domain.WinningNumbers;
@@ -49,17 +51,25 @@ public class LottoController {
     private WinningNumbers readWinningNumbers() {
         while (true) {
             try {
-                printer.printEnterWinningNumber();
-                String mainNumber = reader.readWinningMainNumbers();
+                String mainNumber = readMainNumbers();
+                Lotto lotto = createLotto(mainNumber);
 
-                printer.printEnterBonusNumber();
-                String bonusNumber = reader.readWinningBonusNumber();
-
-                return createWinningNumbers(mainNumber, bonusNumber);
+                String bonusNumber = readBonusNumber();
+                return createWinningNumbers(lotto, bonusNumber);
             } catch (IllegalArgumentException e) {
                 printer.printErrorMessage(e.getMessage());
             }
         }
+    }
+
+    private String readMainNumbers() {
+        printer.printEnterWinningNumber();
+        return reader.readWinningMainNumbers();
+    }
+
+    private String readBonusNumber() {
+        printer.printEnterBonusNumber();
+        return reader.readWinningBonusNumber();
     }
 
     private void processFinalResult(Customer customer, WinningNumbers winningNumbers) {

@@ -9,6 +9,8 @@ import static lotto.view.printer.PrintMessage.USER_FEE_MESSAGE;
 import static lotto.view.printer.PrintMessage.USER_PURCHASE_COUNT;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,7 +46,7 @@ public class ConsolePrinter implements Printer {
 
     private String lottoNumberString(List<List<Integer>> lottoNumbers) {
         return lottoNumbers.stream()
-                .map(numbers -> this.eachNumberString(numbers))
+                .map(this::eachNumberString)
                 .collect(Collectors.joining("\n"));
     }
 
@@ -58,32 +60,37 @@ public class ConsolePrinter implements Printer {
     }
 
     @Override
-    public void printFinalResult(Map<Rank, Long> rankStatics, double profitRate) {
+    public void printFinalResult(Map<Rank, Long> rankStatistics, double profitRate) {
         System.out.println(LOTTO_STATICS);
         System.out.println(HORIZON);
 
-        StringBuilder sb = new StringBuilder();
-        for (Rank rank : Rank.values()) {
-            if (rank.equals(Rank.NONE_PLACE)) {
-                continue;
-            }
+        Arrays.stream(Rank.values())
+                .sorted(Comparator.comparing(rank -> rank.getPrize().getValue()))
+                .forEach(rank -> printEachRankStatistic(rankStatistics, rank));
 
-            sb.append(rank.getCorrectCount())
-                    .append("개 일치");
+        System.out.printf(FORMAT_PROFIT_RATE.toString(), profitRate);
+    }
 
-            if (rank.hasBonus()) {
-                sb.append(", 보너스 볼 일치");
-            }
-
-            sb.append(" (")
-                    .append(makeThreeDigitComma(rank))
-                    .append("원) - ")
-                    .append(rankStatics.getOrDefault(rank, 0L))
-                    .append("개\n");
+    private void printEachRankStatistic(Map<Rank, Long> rankStatics, Rank rank) {
+        if (rank.equals(Rank.NONE_PLACE)) {
+            return;
         }
 
+        StringBuilder sb = new StringBuilder();
+        sb.append(rank.getCorrectCount())
+                .append("개 일치");
+
+        if (rank.hasBonus()) {
+            sb.append(", 보너스 볼 일치");
+        }
+
+        sb.append(" (")
+                .append(makeThreeDigitComma(rank))
+                .append("원) - ")
+                .append(rankStatics.getOrDefault(rank, 0L))
+                .append("개");
+
         System.out.println(sb);
-        System.out.printf(FORMAT_PROFIT_RATE.toString(), profitRate);
     }
 
     private String makeThreeDigitComma(Rank rank) {

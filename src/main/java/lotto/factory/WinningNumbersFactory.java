@@ -1,23 +1,29 @@
 package lotto.factory;
 
+import static lotto.domain.LottoLimitNumbers.MAXIMUM_LOTTO_NUMBER;
+import static lotto.domain.LottoLimitNumbers.MINIMUM_LOTTO_NUMBER;
 import static lotto.util.NumberConverter.parseInt;
 
-import java.util.List;
+import lotto.domain.Lotto;
 import lotto.domain.WinningNumbers;
-import lotto.util.NumberConverter;
+import lotto.exception.ErrorMessage;
 
 public class WinningNumbersFactory {
-    private static final String NUMBER_DELIMITER = ",";
 
-    public static WinningNumbers createWinningNumbers(String mainNumber, String bonusNumber) {
-        List<String> mainNumbers = List.of(mainNumber.split(NUMBER_DELIMITER));
+    public static WinningNumbers createWinningNumbers(Lotto lotto, String bonusInput) {
+        int bonusNumber = parseInt(bonusInput);
+        validateLottoNumber(bonusNumber);
 
-        List<Integer> main = mainNumbers.stream()
-                .map(NumberConverter::parseInt)
-                .toList();
+        if (lotto.hasNumber(bonusNumber)) {
+            throw new IllegalArgumentException(ErrorMessage.DUPLICATE_NUMBER.getMessage());
+        }
 
-        int bonus = parseInt(bonusNumber);
+        return WinningNumbers.of(lotto, bonusNumber);
+    }
 
-        return WinningNumbers.of(main, bonus);
+    private static void validateLottoNumber(int singleNumber) {
+        if (singleNumber < MINIMUM_LOTTO_NUMBER.getValue() || singleNumber > MAXIMUM_LOTTO_NUMBER.getValue()) {
+            throw new IllegalArgumentException(ErrorMessage.NOT_LOTTO_NUMBER.getMessage());
+        }
     }
 }

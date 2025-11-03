@@ -7,7 +7,7 @@ public enum PrintMessage {
     BONUS_WINNING_NUMBER("\n보너스 번호를 입력해 주세요."),
     LOTTO_STATICS("\n당첨 통계"),
     HORIZON("---"),
-    FORMAT_PROFIT_RATE("총 수익률은 %.1f%%입니다.");
+    FORMAT_PROFIT_RATE("\n총 수익률은 %.1f%%입니다.");
 
     private final String message;
 
